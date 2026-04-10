@@ -19,6 +19,8 @@ def create_app():
     jwt.init_app(app)
     from app.routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    from app.routes.jobs import jobs_bp
+    app.register_blueprint(jobs_bp)
 
     from app.models import user, job, status_history
 
