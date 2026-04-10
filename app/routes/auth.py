@@ -1,7 +1,8 @@
 from flask import Blueprint,request,jsonify
 from app import db
 from app.models.user import User
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import create_access_token
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -27,3 +28,18 @@ def register():
     db.session.commit()
 
     return jsonify({"msg": "User created"}), 201
+
+
+@auth_bp.route('/login',methods=['POST'])
+def login():
+    data=request.get_json()
+    user=User.query.filter_by(email=data['email']).first()
+
+    if not user:
+        return jsonify({"msg": "User not found"}), 401
+    elif not check_password_hash(user.password_hash,data['password']):
+        return jsonify({"msg":"Invalid password"}),401
+    
+    token=create_access_token(identity=user.id)
+
+    return jsonify({"access_token": token})
