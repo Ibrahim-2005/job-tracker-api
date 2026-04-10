@@ -1,5 +1,5 @@
 from app import db
-from datetime import datetime
+from datetime import datetime,timezone
 
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,4 +11,4 @@ class Job(db.Model):
     job_url = db.Column(db.String(500))
     applied_date = db.Column(db.Date)
     deleted_at = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
