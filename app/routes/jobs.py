@@ -43,7 +43,7 @@ def get_jobs():
     if status:
         query=query.filter(Job.status==status)
     if company:
-        query=query.filter(Job.company==company)
+        query=query.filter(Job.company.ilike(f"%{company}%"))
     
     jobs=query.all()
     
