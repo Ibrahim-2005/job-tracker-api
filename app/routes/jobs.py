@@ -40,22 +40,29 @@ def get_jobs():
     status=request.args.get('status')
     company=request.args.get('company')
 
+    page = request.args.get('page', 1, type=int)
+    limit = request.args.get('limit', 5, type=int)
+
     if status:
         query=query.filter(Job.status==status)
     if company:
         query=query.filter(Job.company.ilike(f"%{company}%"))
     
-    jobs=query.all()
+    jobs = query.paginate(page=page, per_page=limit, error_out=False)
     
-    return jsonify([
-        {
-            "id":j.id,
-            "company":j.company,
-            "role":j.role,
-            "status":j.status
-
-        }for j in jobs
-    ])
+    return jsonify({
+        "total": jobs.total,
+        "page": jobs.page,
+        "pages": jobs.pages,
+            "data": [
+                {
+                    "id": j.id,
+                    "company": j.company,
+                    "role": j.role,
+                    "status": j.status
+                } for j in jobs.items
+            ]
+    })
 
 @jobs_bp.route('/jobs/<int:job_id>',methods=['PUT'])
 @jwt_required()
