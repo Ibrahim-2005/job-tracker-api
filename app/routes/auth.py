@@ -33,6 +33,8 @@ def register():
 @auth_bp.route('/login',methods=['POST'])
 def login():
     data=request.get_json()
+    if not data or not data.get('email') or not data.get('password'):
+        return jsonify({"msg": "Missing fields"}), 400
     user=User.query.filter_by(email=data['email']).first()
 
     if not user:
