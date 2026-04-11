@@ -35,8 +35,18 @@ def create_job():
 @jwt_required()
 def get_jobs():
     user_id= int(get_jwt_identity())
-    jobs=Job.query.filter_by(user_id=user_id,deleted_at=None).all()
+    query=Job.query.filter_by(user_id=user_id,deleted_at=None)
 
+    status=request.args.get('status')
+    company=request.args.get('company')
+
+    if status:
+        query=query.filter(Job.status==status)
+    if company:
+        query=query.filter(Job.company==company)
+    
+    jobs=query.all()
+    
     return jsonify([
         {
             "id":j.id,
