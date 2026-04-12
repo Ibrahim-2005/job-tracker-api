@@ -12,10 +12,10 @@ def register():
     data = request.get_json()
 
     if not data or not data.get('email') or not data.get('password'):
-        return jsonify({"msg": "Missing fields"}), 400
+        return jsonify({"warning": "Missing fields"}), 400
 
     if User.query.filter_by(email=data['email']).first():
-        return jsonify({"msg": "Email already exists"}), 400
+        return jsonify({"error": "Email already exists"}), 400
 
     hashed_pw = generate_password_hash(data['password'])
 
@@ -34,13 +34,13 @@ def register():
 def login():
     data=request.get_json()
     if not data or not data.get('email') or not data.get('password'):
-        return jsonify({"msg": "Missing fields"}), 400
+        return jsonify({"warning": "Missing fields"}), 400
     user=User.query.filter_by(email=data['email']).first()
 
     if not user:
-        return jsonify({"msg": "User not found"}), 401
+        return jsonify({"error": "User not found"}), 401
     elif not check_password_hash(user.password_hash,data['password']):
-        return jsonify({"msg":"Invalid password"}),401
+        return jsonify({"error":"Invalid password"}),401
     
     token=create_access_token(identity=str(user.id))
 

@@ -12,6 +12,9 @@ jobs_bp = Blueprint('jobs', __name__)
 def create_job():
     user_id = int(get_jwt_identity())
     data=request.get_json()
+    if not data or not data.get('company') or not data.get('role'):
+        return jsonify({"error": "Missing company or role"}), 400
+    
     job=Job(
         user_id=user_id,
         company=data['company'],
@@ -21,7 +24,7 @@ def create_job():
     db.session.commit()
     job_count = Job.query.filter_by(user_id=user_id).count()
     return jsonify({
-        "message": "Job created successfully",
+        "msg": "Job created successfully",
         "data": {
             "id": job.id,
             "company": job.company,
@@ -72,7 +75,7 @@ def update_job(job_id):
 
     job=Job.query.filter_by(id=job_id,user_id=user_id,deleted_at=None).first()
     if not job:
-        return jsonify({"msg":"Job not found"}),404
+        return jsonify({"error":"Job not found"}),404
     
     job.company=data.get('company',job.company)
     job.role=data.get('role',job.role)
@@ -94,10 +97,10 @@ def update_job(job_id):
 def delete_job(job_id):
     user_id= int(get_jwt_identity())
     
-    job=Job.query.filter_by(id=job_id,user_id=user_id).first()
+    job=Job.query.filter_by(id=job_id,user_id=user_id,deleted_at=None).first()
 
     if not job:
-        return jsonify({"msg":"Job not found"}),404
+        return jsonify({"error":"Job not found"}),404
     
     job.deleted_at=datetime.now(timezone.utc)
     db.session.commit()
