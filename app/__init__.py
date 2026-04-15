@@ -21,6 +21,8 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/auth')
     from app.routes.jobs import jobs_bp
     app.register_blueprint(jobs_bp)
+    from app.routes.dashboard import dashboard_bp
+    app.register_blueprint(dashboard_bp)
 
     from app.models import user, job, status_history
 
