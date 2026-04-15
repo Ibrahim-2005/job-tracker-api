@@ -67,6 +67,25 @@ def get_jobs():
             ]
     })
 
+
+@jobs_bp.route('/jobs/<int:job_id>',methods=['GET'])
+@jwt_required()
+def get_job(job_id):
+    user_id= int(get_jwt_identity())
+    job=Job.query.filter_by(user_id=user_id,id=job_id,deleted_at=None).first()
+
+    if not job:
+        return jsonify({"error":"Job not found"}),404
+    
+    return jsonify({
+        "job_id":job.id,
+        "company":job.company,
+        "role":job.role,
+        "status":job.status,
+        "created_at":job.created_at
+    })
+
+
 @jobs_bp.route('/jobs/<int:job_id>',methods=['PUT'])
 @jwt_required()
 def update_job(job_id):
