@@ -4,6 +4,7 @@ from app.models.job import Job
 from app.models.status_history import StatusHistory
 from app import db
 from datetime import datetime,timezone
+from app.schemas.job_schema import JobSchema
 
 jobs_bp = Blueprint('jobs', __name__)
 
@@ -12,8 +13,15 @@ jobs_bp = Blueprint('jobs', __name__)
 def create_job():
     user_id = int(get_jwt_identity())
     data=request.get_json()
-    if not data or not data.get('company') or not data.get('role'):
-        return jsonify({"error": "Missing company or role", "code": 400}), 400
+    if not data:
+        return jsonify({"error": "No data", "code": 400}), 400
+
+    schema = JobSchema()
+    errors = schema.validate(data)
+
+    if errors:
+        return jsonify({"error": errors, "code": 422}), 422
+    
     existing_job = Job.query.filter_by(
         user_id=user_id,
         company=data['company'],
@@ -105,6 +113,12 @@ def update_job(job_id):
     data=request.get_json()
     if not data:
         return jsonify({"error": "No data", "code": 400}), 400
+
+    schema = JobSchema()
+    errors = schema.validate(data, partial=True)
+
+    if errors:
+        return jsonify({"error": errors, "code": 422}), 422
     job=Job.query.filter_by(id=job_id,user_id=user_id,deleted_at=None).first()
     if not job:
         return jsonify({"error": "Job not found", "code": 404}), 404
@@ -112,10 +126,6 @@ def update_job(job_id):
     job.company=data.get('company',job.company)
     job.role=data.get('role',job.role)
 
-    allowed_status = ["applied", "interview", "offer", "rejected"]
-    if 'status' in data and data['status'] not in allowed_status:
-        return jsonify({"error": "Invalid status", "code": 400}), 400
-    
     if 'status' in data and data['status'] != job.status:
         history = StatusHistory(
             job_id=job.id,
