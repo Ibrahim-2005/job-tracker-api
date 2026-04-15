@@ -13,7 +13,16 @@ def create_job():
     user_id = int(get_jwt_identity())
     data=request.get_json()
     if not data or not data.get('company') or not data.get('role'):
-        return jsonify({"error": "Missing company or role"}), 400
+        return jsonify({"error": "Missing company or role", "code": 400}), 400
+    existing_job = Job.query.filter_by(
+        user_id=user_id,
+        company=data['company'],
+        role=data['role'],
+        deleted_at=None
+        ).first()
+
+    if existing_job:
+        return jsonify({"error": "Job already exists", "code": 400}), 400
     
     job=Job(
         user_id=user_id,
@@ -22,9 +31,8 @@ def create_job():
     )
     db.session.add(job)
     db.session.commit()
-    job_count = Job.query.filter_by(user_id=user_id).count()
     return jsonify({
-        "msg": "Job created successfully",
+        "message": "Job created",
         "data": {
             "id": job.id,
             "company": job.company,
@@ -53,18 +61,20 @@ def get_jobs():
     
     jobs = query.paginate(page=page, per_page=limit, error_out=False)
     
-    return jsonify({
-        "total": jobs.total,
-        "page": jobs.page,
-        "pages": jobs.pages,
-            "data": [
-                {
-                    "id": j.id,
-                    "company": j.company,
-                    "role": j.role,
-                    "status": j.status
-                } for j in jobs.items
-            ]
+    return jsonify({"message": "Jobs fetched",
+            "data": {
+                "total": jobs.total,
+                "page": jobs.page,
+                "pages": jobs.pages,
+                "jobs": [
+                    {
+                        "id": j.id,
+                        "company": j.company,
+                        "role": j.role,
+                        "status": j.status
+                    } for j in jobs.items
+                ]
+            }
     })
 
 
@@ -75,14 +85,16 @@ def get_job(job_id):
     job=Job.query.filter_by(user_id=user_id,id=job_id,deleted_at=None).first()
 
     if not job:
-        return jsonify({"error":"Job not found"}),404
+        return jsonify({"error": "Job not found", "code": 404}), 404
     
-    return jsonify({
-        "job_id":job.id,
-        "company":job.company,
-        "role":job.role,
-        "status":job.status,
-        "created_at":job.created_at
+    return jsonify({"message": "Job fetched",
+        "data": {
+            "id": job.id,
+            "company": job.company,
+            "role": job.role,
+            "status": job.status,
+            "created_at": job.created_at
+        }
     })
 
 
@@ -91,13 +103,19 @@ def get_job(job_id):
 def update_job(job_id):
     user_id= int(get_jwt_identity())
     data=request.get_json()
-
+    if not data:
+        return jsonify({"error": "No data", "code": 400}), 400
     job=Job.query.filter_by(id=job_id,user_id=user_id,deleted_at=None).first()
     if not job:
-        return jsonify({"error":"Job not found"}),404
+        return jsonify({"error": "Job not found", "code": 404}), 404
     
     job.company=data.get('company',job.company)
     job.role=data.get('role',job.role)
+
+    allowed_status = ["applied", "interview", "offer", "rejected"]
+    if 'status' in data and data['status'] not in allowed_status:
+        return jsonify({"error": "Invalid status", "code": 400}), 400
+    
     if 'status' in data and data['status'] != job.status:
         history = StatusHistory(
             job_id=job.id,
@@ -109,7 +127,14 @@ def update_job(job_id):
         job.status = data['status']
 
     db.session.commit()
-    return jsonify({"msg": "Job updated"})
+    return jsonify({"message": "Job updated",
+        "data": {
+            "id": job.id,
+            "company": job.company,
+            "role": job.role,
+            "status": job.status
+        }
+    })
 
 @jobs_bp.route('/jobs/<int:job_id>',methods=['DELETE'])
 @jwt_required()
@@ -119,11 +144,11 @@ def delete_job(job_id):
     job=Job.query.filter_by(id=job_id,user_id=user_id,deleted_at=None).first()
 
     if not job:
-        return jsonify({"error":"Job not found"}),404
+        return jsonify({"error": "Job not found", "code": 404}), 404
     
     job.deleted_at=datetime.now(timezone.utc)
     db.session.commit()
-    return jsonify({"msg":"Job Deleted"})
+    return jsonify({"message": "Job deleted"})
 
 
 @jobs_bp.route('/jobs/<int:job_id>/history', methods=['GET'])
@@ -134,17 +159,19 @@ def get_history(job_id):
     job = Job.query.filter_by(id=job_id,user_id=user_id,deleted_at=None).first()
 
     if not job:
-        return jsonify({"error": "Job not found"}), 404
+        return jsonify({"error": "Job not found", "code": 404}), 404
 
     history = StatusHistory.query.filter_by(job_id=job_id).all()
 
-    return jsonify([
-        {
-            "from": h.from_status,
-            "to": h.to_status,
-            "time": h.changed_at
-        } for h in history
-    ])
+    return jsonify({"message": "History fetched",
+        "data": [
+            {
+                "from": h.from_status,
+                "to": h.to_status,
+                "time": h.changed_at
+            } for h in history
+        ]
+    })
 
 
 @jobs_bp.route('/dashboard', methods=['GET'])
@@ -161,10 +188,12 @@ def dashboard():
     offer = jobs.filter_by(status='offer').count()
     rejected = jobs.filter_by(status='rejected').count()
 
-    return jsonify({
-        "total_jobs": total_jobs,
-        "applied": applied,
-        "interview": interview,
-        "offer": offer,
-        "rejected": rejected
+    return jsonify({"message": "Dashboard stats",
+        "data": {
+            "total_jobs": total_jobs,
+            "applied": applied,
+            "interview": interview,
+            "offer": offer,
+            "rejected": rejected
+        }
     })

@@ -12,10 +12,10 @@ def register():
     data = request.get_json()
 
     if not data or not data.get('email') or not data.get('password'):
-        return jsonify({"warning": "Missing fields"}), 400
+        return jsonify({"error": "Missing fields","code": 400}), 400
 
     if User.query.filter_by(email=data['email']).first():
-        return jsonify({"error": "Email already exists"}), 400
+        return jsonify({"error": "Email already exists","code": 400}), 400
 
     hashed_pw = generate_password_hash(data['password'])
 
@@ -27,21 +27,19 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({"msg": "User created"}), 201
+    return jsonify({"message": "User created","data": {"email": user.email}}), 201
 
 
 @auth_bp.route('/login',methods=['POST'])
 def login():
     data=request.get_json()
     if not data or not data.get('email') or not data.get('password'):
-        return jsonify({"warning": "Missing fields"}), 400
+        return jsonify({"error": "Missing fields","code": 400}), 400
     user=User.query.filter_by(email=data['email']).first()
 
-    if not user:
-        return jsonify({"error": "User not found"}), 401
-    elif not check_password_hash(user.password_hash,data['password']):
-        return jsonify({"error":"Invalid password"}),401
+    if not user or not check_password_hash(user.password_hash, data['password']):
+        return jsonify({"error": "Invalid credentials","code": 401}), 401
     
     token=create_access_token(identity=str(user.id))
 
-    return jsonify({"access_token": token})
+    return jsonify({"message": "Login successful","data": {"access_token": token}})
