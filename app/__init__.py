@@ -24,6 +24,9 @@ def create_app():
     from app.routes.dashboard import dashboard_bp
     app.register_blueprint(dashboard_bp)
 
+    from app.utils.errors import register_error_handlers
+    register_error_handlers(app)
+
     from app.models import user, job, status_history
 
     return app
