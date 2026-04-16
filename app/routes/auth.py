@@ -2,7 +2,7 @@ from flask import Blueprint,request,jsonify
 from app import db,jwt_blocklist
 from app.models.user import User
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_jwt_extended import create_access_token,get_jwt,jwt_required
+from flask_jwt_extended import create_access_token,create_refresh_token,get_jwt,jwt_required,get_jwt_identity
 from app.schemas.user_schema import UserSchema
 
 auth_bp = Blueprint('auth', __name__)
@@ -46,9 +46,10 @@ def login():
     if not user or not check_password_hash(user.password_hash, data['password']):
         return jsonify({"error": "Invalid credentials","code": 401}), 401
     
-    token=create_access_token(identity=str(user.id))
+    access_token=create_access_token(identity=str(user.id))
+    refresh_token=create_refresh_token(identity=str(user.id))
 
-    return jsonify({"message": "Login successful","data": {"access_token": token}})
+    return jsonify({"message": "Login successful","data": {"access_token": access_token}})
 
 @auth_bp.route('/logout',methods=['POST'])
 @jwt_required()
@@ -56,3 +57,12 @@ def logout():
     jti=get_jwt()["jti"]
     jwt_blocklist.add(jti)
     return jsonify({"message":"Logged out successfully"})
+
+@auth_bp.route('/refresh',methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    user_id=int(get_jwt_identity())
+    new_access_token=create_access_token(identity=user_id)
+    return jsonify({"message": "Token refreshed",
+                    "data": {"access_token": new_access_token}
+    })
