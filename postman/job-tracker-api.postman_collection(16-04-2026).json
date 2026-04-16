@@ -1,0 +1,249 @@
+{
+  "info": {
+    "_postman_id": "4bc752a4-5b92-484a-8e5e-c7940b666e9b",
+    "name": "Job Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48316624"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Job",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"company\": \"Microsoft\",\r\n  \"role\": \"Backend Developer Intern\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/jobs",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Jobs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/jobs",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Job",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/jobs/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Job",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"status\": \"offer\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/jobs/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Job History",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/jobs/2/history",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs",
+            "2",
+            "history"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Job",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/jobs/3",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify Deleted Job",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/jobs/3",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "jobs",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
