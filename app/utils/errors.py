@@ -18,6 +18,10 @@ def register_error_handlers(app):
     @app.errorhandler(422)
     def unprocessable(e):
         return jsonify({"error": "Unprocessable entity","code": 422}), 422
+    
+    @app.errorhandler(429)
+    def too_many_requests(e):
+        return jsonify({"error": "Too many requests","code": 429}), 429
 
     @app.errorhandler(500)
     def server_error(e):
