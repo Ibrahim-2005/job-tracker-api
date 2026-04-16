@@ -1,5 +1,5 @@
 from flask import Blueprint,request,jsonify
-from app import db,jwt_blocklist
+from app import db,jwt_blocklist,limiter
 from app.models.user import User
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import create_access_token,create_refresh_token,get_jwt,jwt_required,get_jwt_identity
@@ -8,6 +8,7 @@ from app.schemas.user_schema import UserSchema
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
+@limiter.limit("10 per minute")
 def register():
     data = request.get_json()
 
@@ -37,6 +38,7 @@ def register():
 
 
 @auth_bp.route('/login',methods=['POST'])
+@limiter.limit("10 per minute")
 def login():
     data=request.get_json()
     if not data or not data.get('email') or not data.get('password'):
