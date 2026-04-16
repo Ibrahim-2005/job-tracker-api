@@ -1,8 +1,8 @@
 from flask import Blueprint,request,jsonify
-from app import db
+from app import db,jwt_blocklist
 from app.models.user import User
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token,get_jwt,jwt_required
 from app.schemas.user_schema import UserSchema
 
 auth_bp = Blueprint('auth', __name__)
@@ -49,3 +49,10 @@ def login():
     token=create_access_token(identity=str(user.id))
 
     return jsonify({"message": "Login successful","data": {"access_token": token}})
+
+@auth_bp.route('/logout',methods=['POST'])
+@jwt_required()
+def logout():
+    jti=get_jwt()["jti"]
+    jwt_blocklist.add(jti)
+    return jsonify({"message":"Logged out successfully"})

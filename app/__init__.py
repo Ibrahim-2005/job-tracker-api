@@ -10,6 +10,13 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt=JWTManager()
 
+jwt_blocklist=set()
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload):
+    jti = jwt_payload["jti"]
+    return jti in jwt_blocklist
+
 def create_app():
     app = Flask(__name__)
 
