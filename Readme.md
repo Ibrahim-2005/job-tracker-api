@@ -231,3 +231,5 @@ JWT_SECRET_KEY=your_jwt_secret
 ## ⭐ Support
 
 If you found this useful, consider giving this repo a ⭐
+
+---
