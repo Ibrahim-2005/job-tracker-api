@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.job import Job
+from datetime import datetime,timezone,timedelta
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -29,4 +30,30 @@ def dashboard():
             "rejected": rejected,
             "response_rate": round(response_rate,2)
         }
+    })
+
+@dashboard.route('/dashboard/stale',methods=['GET'])
+@jwt_required()
+def stale_jobs():
+    
+    user_id=int(get_jwt_identity())
+    seven_days=datetime.now(timedelta.utc)-timedelta(days=7)
+
+    jobs = Job.query.filter(
+        Job.user_id == user_id,
+        Job.status == 'applied',
+        Job.created_at < seven_days,
+        Job.deleted_at == None
+    ).all()
+
+    return jsonify({
+        "message": "Stale jobs",
+        "data": [
+            {
+                "id": j.id,
+                "company": j.company,
+                "role": j.role,
+                "created_at": j.created_at.isoformat() if j.created_at else None
+            } for j in jobs
+        ]
     })
