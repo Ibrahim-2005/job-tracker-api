@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "4bc752a4-5b92-484a-8e5e-c7940b666e9b",
+    "_postman_id": "adaaa538-8a3c-4595-8e2a-3cd70de4a569",
     "name": "Job Tracker API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48316624"
@@ -73,7 +73,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"company\": \"Flipkart\",\r\n  \"role\": \"SDE-1 Intern\"\r\n}",
+          "raw": "{\r\n  \"company\": \"Microsoft\",\r\n  \"role\": \"SDE Intern\",\r\n  \"notes\": \"Referral\",\r\n  \"job_url\": \"https://careers.microsoft.com\",\r\n  \"applied_date\": \"2026-04-18\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -152,7 +152,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"status\": \"offer\"\r\n}",
+          "raw": "{\r\n  \"status\": \"interview\",\r\n  \"notes\": \"HR call done\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -192,6 +192,53 @@
             "jobs",
             "{{job_id}}",
             "history"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/dashboard",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "dashboard"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Stale Jobs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/dashboard/stale",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "dashboard",
+            "stale"
           ]
         }
       },
