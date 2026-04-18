@@ -32,7 +32,7 @@ def dashboard():
         }
     })
 
-@dashboard.route('/dashboard/stale',methods=['GET'])
+@dashboard_bp.route('/dashboard/stale',methods=['GET'])
 @jwt_required()
 def stale_jobs():
     
