@@ -16,6 +16,9 @@ def dashboard():
     offer = Job.query.filter_by(user_id=user_id, status='offer', deleted_at=None).count()
     rejected = Job.query.filter_by(user_id=user_id, status='rejected', deleted_at=None).count()
 
+    response_rate=0
+    if total_jobs> 0:
+        response_rate=((interview + offer)/total_jobs)*100
     return jsonify({
         "message": "Dashboard stats",
         "data": {
@@ -23,6 +26,7 @@ def dashboard():
             "applied": applied,
             "interview": interview,
             "offer": offer,
-            "rejected": rejected
+            "rejected": rejected,
+            "response_rate": round(response_rate,2)
         }
     })
