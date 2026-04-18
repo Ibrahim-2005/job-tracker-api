@@ -2,12 +2,14 @@ from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.job import Job
 from datetime import datetime,timezone,timedelta
+from app import cache
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
 
 @dashboard_bp.route('/dashboard', methods=['GET'])
 @jwt_required()
+@cache.cached(timeout=300)
 def dashboard():
     user_id = int(get_jwt_identity())
 
@@ -20,7 +22,7 @@ def dashboard():
     response_rate=0
     if total_jobs> 0:
         response_rate=((interview + offer)/total_jobs)*100
-    return jsonify({
+    response = jsonify({
         "message": "Dashboard stats",
         "data": {
             "total_jobs": total_jobs,
@@ -31,13 +33,15 @@ def dashboard():
             "response_rate": round(response_rate,2)
         }
     })
+    response.headers['X-Cache'] = 'HIT'
+    return response
 
 @dashboard_bp.route('/dashboard/stale',methods=['GET'])
 @jwt_required()
 def stale_jobs():
     
     user_id=int(get_jwt_identity())
-    seven_days=datetime.now(timedelta.utc)-timedelta(days=7)
+    seven_days=datetime.now(timezone.utc)-timedelta(days=7)
 
     jobs = Job.query.filter(
         Job.user_id == user_id,

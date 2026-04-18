@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_caching import Cache
 
 load_dotenv()
 
@@ -15,6 +16,8 @@ jwt=JWTManager()
 jwt_blocklist=set()
 
 limiter=Limiter(get_remote_address)
+
+cache=Cache()
 
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload):
@@ -42,6 +45,10 @@ def create_app():
 
     limiter.init_app(app)
 
+    app.config['CACHE_TYPE'] = 'SimpleCache'
+    app.config['CACHE_DEFAULT_TIMEOUT'] = 300
+    cache.init_app(app)
+    
     return app
 
 
