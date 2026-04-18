@@ -219,6 +219,13 @@ JWT_SECRET_KEY=your_jwt_secret
 
 ---
 
+## ⚠️ Known Limitations
+
+* JWT blocklist is stored in-memory and resets when the server restarts.
+* In a production environment, this should be replaced with a persistent store like Redis.
+
+---
+
 ## 👨‍💻 Author
 
 **Ibrahim**

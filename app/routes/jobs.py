@@ -35,7 +35,10 @@ def create_job():
     job=Job(
         user_id=user_id,
         company=data['company'],
-        role=data['role']
+        role=data['role'],
+        notes=data.get('notes'),
+        job_url=data.get('job_url'),
+        applied_date=data.get('applied_date')
     )
     db.session.add(job)
     db.session.commit()
@@ -101,7 +104,10 @@ def get_job(job_id):
             "company": job.company,
             "role": job.role,
             "status": job.status,
-            "created_at": job.created_at
+            "created_at": job.created_at.isoformat() if job.created_at else None,
+            "notes": job.notes,
+            "job_url": job.job_url,
+            "applied_date": job.applied_date
         }
     })
 
@@ -125,6 +131,9 @@ def update_job(job_id):
     
     job.company=data.get('company',job.company)
     job.role=data.get('role',job.role)
+    job.notes = data.get('notes', job.notes)
+    job.job_url = data.get('job_url', job.job_url)
+    job.applied_date = data.get('applied_date', job.applied_date)
 
     if 'status' in data and data['status'] != job.status:
         history = StatusHistory(
@@ -178,7 +187,7 @@ def get_history(job_id):
             {
                 "from": h.from_status,
                 "to": h.to_status,
-                "time": h.changed_at
+                "time": h.changed_at.isoformat() if h.changed_at else None
             } for h in history
         ]
     })
