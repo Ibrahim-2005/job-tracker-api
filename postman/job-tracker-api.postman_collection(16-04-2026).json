@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
+          "raw": "{\r\n  \"email\": \"test1@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -40,7 +40,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
+          "raw": "{\r\n  \"email\": \"test1@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -67,13 +67,13 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"company\": \"Microsoft\",\r\n  \"role\": \"Backend Developer Intern\"\r\n}",
+          "raw": "{\r\n  \"company\": \"Flipkart\",\r\n  \"role\": \"SDE-1 Intern\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -99,7 +99,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
@@ -122,18 +122,18 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
         "url": {
-          "raw": "{{base_url}}/jobs/2",
+          "raw": "{{base_url}}/jobs/{{job_id}}",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "jobs",
-            "2"
+            "{{job_id}}"
           ]
         }
       },
@@ -146,7 +146,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
@@ -160,13 +160,13 @@
           }
         },
         "url": {
-          "raw": "{{base_url}}/jobs/2",
+          "raw": "{{base_url}}/jobs/{{job_id}}",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "jobs",
-            "2"
+            "{{job_id}}"
           ]
         }
       },
@@ -179,18 +179,18 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
         "url": {
-          "raw": "{{base_url}}/jobs/2/history",
+          "raw": "{{base_url}}/jobs/{{job_id}}/history",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "jobs",
-            "2",
+            "{{job_id}}",
             "history"
           ]
         }
@@ -204,18 +204,18 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
         "url": {
-          "raw": "{{base_url}}/jobs/3",
+          "raw": "{{base_url}}/jobs/{{job_id}}",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "jobs",
-            "3"
+            "{{job_id}}"
           ]
         }
       },
@@ -224,22 +224,22 @@
     {
       "name": "Verify Deleted Job",
       "request": {
-        "method": "DELETE",
+        "method": "GET",
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3NjM2MjM0NiwianRpIjoiZmZkZDY4YmItNjFkYS00ZDFmLWFmYzktZWM4NTk5OGY3YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIiLCJuYmYiOjE3NzYzNjIzNDYsImNzcmYiOiI1NjIwZTc3MC00NGIzLTQwMjAtYjYxYS00MDMxOWQyZGZmNzUiLCJleHAiOjE3NzYzNjMyNDZ9.Sx1UcukrzE3y7_dnt5lnPS6Dq-9MoldWHQxSB852FZo",
+            "value": "Bearer {{access_token}}",
             "type": "text"
           }
         ],
         "url": {
-          "raw": "{{base_url}}/jobs/3",
+          "raw": "{{base_url}}/jobs/{{job_id}}",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "jobs",
-            "3"
+            "{{job_id}}"
           ]
         }
       },
