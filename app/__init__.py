@@ -53,7 +53,7 @@ def create_app():
     
     from app.utils.scheduler import start_scheduler
     if app.config.get("SCHEDULER_ENABLED", True):
-        start_scheduler()
+        start_scheduler(app)
 
     return app
 

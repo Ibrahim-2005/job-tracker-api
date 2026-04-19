@@ -17,7 +17,9 @@ def mark_stale_jobs():
 def clear_cache():
     cache.clear()
 
-def start_scheduler():
+def start_scheduler(app=None):
+    if app and app.config.get("TESTING"):
+        return
     if scheduler.start!=STATE_RUNNING:
         scheduler.add_job(mark_stale_jobs,'interval',days=1)
         scheduler.add_job(clear_cache,'interval',weeks=1)
