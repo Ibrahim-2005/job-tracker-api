@@ -16,6 +16,7 @@ def app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     app.config["JWT_SECRET_KEY"] = "this-is-a-super-long-secret-key-for-testing-purpose-only"
     app.config["RATELIMIT_ENABLED"] = False
+    app.config["SCHEDULER_ENABLED"] = False
     
     with app.app_context():
         db.create_all()

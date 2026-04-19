@@ -52,7 +52,8 @@ def create_app():
     cache.init_app(app)
     
     from app.utils.scheduler import start_scheduler
-    start_scheduler()
+    if app.config.get("SCHEDULER_ENABLED", True):
+        start_scheduler()
 
     return app
 

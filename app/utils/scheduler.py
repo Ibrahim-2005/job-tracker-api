@@ -1,4 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.base import STATE_RUNNING
 from datetime import datetime,timedelta,timezone
 from app.models.job import Job
 from app import db,cache
@@ -17,6 +18,7 @@ def clear_cache():
     cache.clear()
 
 def start_scheduler():
-    scheduler.add_job(mark_stale_jobs,'interval',days=1)
-    scheduler.add_job(clear_cache,'interval',weeks=1)
-    scheduler.start()
+    if scheduler.start!=STATE_RUNNING:
+        scheduler.add_job(mark_stale_jobs,'interval',days=1)
+        scheduler.add_job(clear_cache,'interval',weeks=1)
+        scheduler.start()
