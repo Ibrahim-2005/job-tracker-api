@@ -12,13 +12,15 @@ def test_register(client):
 
 
 def test_login(client):
+    email = f"test_{uuid.uuid4()}@gmail.com"
+
     client.post('/auth/register', json={
-        "email": "test@gmail.com",
+        "email": email,
         "password": "12345678"
     })
 
     response = client.post('/auth/login', json={
-        "email": "test@gmail.com",
+        "email": email,
         "password": "12345678"
     })
 
