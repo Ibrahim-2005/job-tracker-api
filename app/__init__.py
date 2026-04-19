@@ -49,6 +49,9 @@ def create_app():
     app.config['CACHE_DEFAULT_TIMEOUT'] = 300
     cache.init_app(app)
     
+    from app.utils.scheduler import start_scheduler
+    start_scheduler()
+    
     return app
 
 
