@@ -1,6 +1,8 @@
 # 🚀 Job Tracker API
 
 [![Run Tests](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml/badge.svg)](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml)
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Flask](https://img.shields.io/badge/Flask-API-black)
 
 A production-ready backend API to track job applications with authentication, status tracking, analytics, caching, and automated testing.
 
