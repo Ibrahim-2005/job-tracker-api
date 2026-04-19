@@ -9,10 +9,16 @@ dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/dashboard', methods=['GET'])
 @jwt_required()
-@cache.cached(timeout=300)
 def dashboard():
     user_id = int(get_jwt_identity())
 
+    cache_key= f"dashboard_{get_jwt_identity()}"
+    cache_data=cache.get(cache_key)
+    if cache_data:
+        response=jsonify(cache_data)
+        response.headers['X-Cache']='HIT'
+        return response
+    
     total_jobs = Job.query.filter_by(user_id=user_id, deleted_at=None).count()
     applied = Job.query.filter_by(user_id=user_id, status='applied', deleted_at=None).count()
     interview = Job.query.filter_by(user_id=user_id, status='interview', deleted_at=None).count()
@@ -22,7 +28,7 @@ def dashboard():
     response_rate=0
     if total_jobs> 0:
         response_rate=((interview + offer)/total_jobs)*100
-    response = jsonify({
+    data = jsonify({
         "message": "Dashboard stats",
         "data": {
             "total_jobs": total_jobs,
@@ -33,7 +39,9 @@ def dashboard():
             "response_rate": round(response_rate,2)
         }
     })
-    response.headers['X-Cache'] = 'HIT'
+    cache.set(data)
+    response=jsonify(data)
+    response.headers['X-Cache'] = 'MISS'
     return response
 
 @dashboard_bp.route('/dashboard/stale',methods=['GET'])
