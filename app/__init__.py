@@ -28,6 +28,8 @@ def create_app():
     app = Flask(__name__)
 
     app.config.from_object("config.Config")
+    if not app.config.get("SQLALCHEMY_DATABASE_URI"):
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
@@ -51,7 +53,7 @@ def create_app():
     
     from app.utils.scheduler import start_scheduler
     start_scheduler()
-    
+
     return app
 
 
