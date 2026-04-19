@@ -6,13 +6,17 @@ from app import db,cache
 
 scheduler=BackgroundScheduler()
 def mark_stale_jobs():
-    deadline=datetime.now(timezone.utc())-timedelta(days=7)
+    from flask import current_app
 
-    stale_jobs=Job.query.filter_by(Job.status=="applied",Job.created_at<deadline).all()
-    for job in stale_jobs:
-        job.notes = (job.notes or "") + " [STALE]"
+    with current_app.app_context():
+        deadline=datetime.now(timezone.utc)-timedelta(days=7)
 
-    db.session.commit()
+        stale_jobs=Job.query.filter(Job.status=="applied",Job.created_at<deadline).all()
+        for job in stale_jobs:
+            if "[STALE]" not in (job.notes or ""):
+                job.notes = (job.notes or "") + " [STALE]"
+
+        db.session.commit()
 
 def clear_cache():
     cache.clear()

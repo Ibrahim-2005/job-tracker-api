@@ -1,6 +1,8 @@
 # 🚀 Job Tracker API
 
-A production-ready backend API to track job applications with authentication, status tracking, and analytics.
+[![Run Tests](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml/badge.svg)](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml)
+
+A production-ready backend API to track job applications with authentication, status tracking, analytics, caching, and automated testing.
 
 ---
 
@@ -13,14 +15,16 @@ A production-ready backend API to track job applications with authentication, st
 ## 🧠 Overview
 
 The **Job Tracker API** is a backend system designed to help users manage and track their job applications efficiently.
+This API is designed with production-ready practices including caching, background jobs, and CI/CD.
 
 It allows users to:
 
-* Register and authenticate securely
-* Track job applications
-* Update job status over time
-* View complete status history
-* Analyze job statistics
+* Register and authenticate securely  
+* Track job applications  
+* Update job status over time  
+* View complete status history  
+* Analyze job statistics  
+* Improve performance using caching  
 
 This project focuses on **real-world backend architecture**, **clean API design**, and **scalable structure**.
 
@@ -31,10 +35,15 @@ This project focuses on **real-world backend architecture**, **clean API design*
 * **Python**
 * **Flask**
 * **PostgreSQL**
+* **SQLite (for testing)**
 * **SQLAlchemy (ORM)**
-* **Flask-JWT-Extended (JWT Auth)**
+* **Flask-JWT-Extended (Authentication)**
 * **Flask-Migrate (Alembic)**
+* **Flask-Caching (Performance)**
 * **Flask-Limiter (Rate Limiting)**
+* **APScheduler (Background Jobs)**
+* **Pytest (Testing)**  
+* **GitHub Actions (CI)**  
 * **Render (Deployment)**
 * **Railway (Database Hosting)**
 * **Postman (API Testing)**
@@ -45,43 +54,63 @@ This project focuses on **real-world backend architecture**, **clean API design*
 
 ### 🔑 Authentication
 
-* User Registration
-* Login with JWT
-* Access & Refresh Tokens
-* Secure password hashing
-* Token-based protected routes
+* User Registration  
+* Login with JWT  
+* Access & Refresh Tokens  
+* Secure password hashing  
+* Token-based protected routes  
+* Logout with token blocklist  
 
 ---
 
 ### 💼 Job Management
 
-* Create job applications
-* Get all jobs (with filters & pagination)
-* Get single job details
-* Update job details
-* Soft delete jobs
+* Create job applications  
+* Get all jobs (with filters & pagination)  
+* Get single job details  
+* Update job details  
+* Soft delete jobs  
+* Duplicate job prevention  
 
 ---
 
 ### 📊 Status Tracking
 
-* Track status changes (applied → interview → offer → rejected)
-* Maintain complete history of status transitions
+* Track status changes (applied → interview → offer → rejected)  
+* Maintain complete history of status transitions  
 
 ---
 
 ### 📈 Dashboard
 
-* Total jobs count
-* Applied / Interview / Offer / Rejected stats
+* Total jobs count  
+* Applied / Interview / Offer / Rejected stats  
+* Response rate calculation  
+* Stale job detection (based on inactivity, not creation time)  
+
+---
+
+### ⚡ Performance Optimization
+
+* User-specific dashboard caching  
+* Manual cache control using:
+  - `X-Cache: HIT`
+  - `X-Cache: MISS`
+
+---
+
+### 🔄 Background Jobs
+
+* Daily job: identify stale applications  
+* Weekly job: clear cached data  
 
 ---
 
 ### 🛡️ Validation & Error Handling
 
-* Consistent JSON response format
-* Proper HTTP status codes (400, 401, 404, 429)
-* Schema-based validation
+* Consistent JSON response format  
+* Proper HTTP status codes (400, 401, 404, 429)  
+* Schema-based validation  
 
 ---
 
@@ -110,12 +139,52 @@ This project focuses on **real-world backend architecture**, **clean API design*
 
 ---
 
-### 📊 Extra
+### 📊 History
 
-| Method | Endpoint             | Description        |
-| ------ | -------------------- | ------------------ |
-| GET    | `/jobs/<id>/history` | Job status history |
-| GET    | `/dashboard`         | Job statistics     |
+| Method | Endpoint             | Description             |
+| ------ | -------------------- | ----------------------- |
+| GET    | `/jobs/<id>/history` | Job status history      |
+| GET    | `/dashboard`         | Job statistics          |
+| GET    | `/dashboard/stale`   | Stale job detection     |
+
+---
+
+## ⚡ Caching Strategy
+
+Dashboard responses are cached per user.
+
+Cache key format:
+
+
+```
+dashboard_<user_id>
+```
+
+
+Response header shows cache behavior:
+
+
+```
+X-Cache: HIT / MISS
+```
+---
+
+## 🧠 Stale Job Logic
+
+A job is considered stale if:
+- Status = applied  
+- AND no activity in the last 7 days  
+
+Uses:
+StatusHistory.changed_at (latest activity), NOT created_at.
+
+---
+
+### 🧪 Testing & CI
+
+* Pytest-based test suite  
+* GitHub Actions CI pipeline  
+* In-memory database for isolated testing  
 
 ---
 
@@ -160,7 +229,7 @@ Job_Tracker/
 │   │
 │   ├── utils/
 │   │   ├── errors.py
-│   │   ├── limiter.py
+│   │   ├── scheduler.py
 │   │
 │   ├── __init__.py
 │
@@ -200,29 +269,31 @@ JWT_SECRET_KEY=your_jwt_secret
 
 ## 🧠 Key Learnings
 
-* Designing scalable backend systems
-* Implementing JWT authentication (access + refresh)
-* Database modeling with relationships
-* API design and best practices
-* Handling real-world errors and edge cases
-* Deployment and environment management
+* Designing scalable backend systems  
+* Implementing JWT authentication (access + refresh)  
+* Database modeling with relationships  
+* API design and best practices  
+* Performance optimization using caching  
+* Handling real-world errors and edge cases  
+* Deployment and CI integration  
 
 ---
 
 ## 📌 Future Improvements
 
-* Add automated testing (pytest)
-* Add caching layer (Flask-Caching)
-* Add background jobs (APScheduler)
-* Build frontend (React)
-* Add CI/CD pipeline
+* Redis-based caching  
+* Persistent JWT blocklist  
+* Expanded test coverage  
+* Frontend (React)  
+* Docker support
 
 ---
 
 ## ⚠️ Known Limitations
 
-* JWT blocklist is stored in-memory and resets when the server restarts.
-* In a production environment, this should be replaced with a persistent store like Redis.
+* JWT blocklist is stored in-memory and resets when the server restarts  
+* SimpleCache is not suitable for multi-instance production  
+* Scheduler runs inside the app (can be separated in production)  
 
 ---
 
