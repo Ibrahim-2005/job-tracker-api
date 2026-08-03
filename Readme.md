@@ -3,8 +3,13 @@
 [![Run Tests](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml/badge.svg)](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Flask](https://img.shields.io/badge/Flask-API-black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue?logo=postgresql)
+![JWT](https://img.shields.io/badge/JWT-Authentication-success)
+![Pytest](https://img.shields.io/badge/Tested-Pytest-success)
+![Render](https://img.shields.io/badge/Render-Deployed-success)
+![Railway](https://img.shields.io/badge/Database-Railway-purple)
 
-A production-ready backend API to track job applications with authentication, status tracking, analytics, caching, and automated testing.
+A production-ready Flask REST API for tracking job applications with JWT authentication, analytics, caching, background jobs, and automated testing.
 
 ---
 
@@ -50,6 +55,34 @@ This project focuses on **real-world backend architecture**, **clean API design*
 * **Railway (Database Hosting)**
 * **Postman (API Testing)**
 
+---
+
+## 🏛 Architecture
+
+```text
+                   Client
+                     │
+                     ▼
+             Flask REST API
+                     │
+      ┌──────────────┼──────────────┐
+      ▼              ▼              ▼
+ Authentication   Job Routes   Dashboard
+      │              │              │
+      └──────────────┼──────────────┘
+                     ▼
+              Service Layer
+                     ▼
+              SQLAlchemy ORM
+                     ▼
+               PostgreSQL
+                     ▲
+                     │
+        APScheduler Background Jobs
+
+        Flask-Caching (Dashboard)
+
+```
 ---
 
 ## 🔐 Features
@@ -148,6 +181,31 @@ This project focuses on **real-world backend architecture**, **clean API design*
 | GET    | `/jobs/<id>/history` | Job status history      |
 | GET    | `/dashboard`         | Job statistics          |
 | GET    | `/dashboard/stale`   | Stale job detection     |
+
+---
+
+## 📖 Example API Request
+
+### Login
+
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+### Response
+
+```json
+{
+  "access_token": "...",
+  "refresh_token": "..."
+}
+```
 
 ---
 
@@ -301,7 +359,11 @@ JWT_SECRET_KEY=your_jwt_secret
 
 ## 👨‍💻 Author
 
-**Ibrahim**
+**Mohamed Ibrahim**
+
+Backend Developer
+
+Python • Flask • PostgreSQL
 
 * GitHub: https://github.com/Ibrahim-2005
 * LinkedIn: https://www.linkedin.com/in/mohamed-ibrahim-y/
