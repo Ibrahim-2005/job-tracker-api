@@ -27,6 +27,11 @@ def check_if_token_revoked(jwt_header, jwt_payload):
 def create_app():
     app = Flask(__name__)
 
+    @app.get("/health")
+    def health():
+        """Simple liveness probe."""
+        return {"status": "ok"}, 200
+
     app.config.from_object("config.Config")
     if not app.config.get("SQLALCHEMY_DATABASE_URI"):
         app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
