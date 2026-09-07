@@ -1,3 +1,5 @@
+<div align="center">
+  
 # 🚀 Job Tracker API
 
 [![Run Tests](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml/badge.svg)](https://github.com/Ibrahim-2005/job-tracker-api/actions/workflows/test.yml)
@@ -12,6 +14,7 @@
 A production-ready Flask REST API for tracking job applications with JWT authentication, analytics, caching, background jobs, and automated testing.
 
 ---
+</div>
 
 ## 🌐 Live API
 
